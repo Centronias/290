@@ -1,0 +1,75 @@
+/**************************************************************************************************
+***************************************************************************************************
+style.css
+***************************************************************************************************
+Charles Santos
+CS290 S15
+Assignment 2
+***************************************************************************************************
+**************************************************************************************************/
+
+
+
+td:nth-child(1) {
+	font-style:	italic;
+}
+
+td:nth-child(2) {
+	color:	red;
+}
+
+td:nth-child(4) {
+	color:	blue;
+}
+
+tbody tr:nth-child(odd) td {
+	background-color:	#CCFFCC;
+}
+
+tbody tr:nth-child(even) td {
+	background-color:	#CCCCFF;
+}
+
+dt:hover + dd {
+	background-color:	#FFCCFF;
+}
+
+.outer-content {
+	margin-top:			20px;
+	padding:			20px;
+	width: 				75%;
+	background-color:	#CCCCFF;
+}
+
+.inner-content {
+	padding:			20px;
+	width:				75%;
+	background-color:	#FFCCFF;
+}
+
+body {
+	font-size:		11px;
+	font-family:	verdana, helvetica, arial, sans-serif;
+}
+
+table, th, td {
+	border-collapse: 	collapse;
+	border: 			1px solid #808080;
+	font-size:			100%;
+	padding: 			5px;
+	padding-top: 		7px;
+	padding-bottom: 	7px;
+}
+
+h1 {
+	font-size:		28px;
+	margin-top:		0px;
+	font-weight:	normal;
+}
+
+h2 {
+	font-size:		22px;
+	margin-top:		10px;
+	margin-bottom:	10px;
+	font-weight:	normal;
+}
