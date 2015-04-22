@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!-- **********************************************************************************************
+***************************************************************************************************
+index.html
+***************************************************************************************************
+Charles Santos
+CS290 S15
+Assignment 3
+***************************************************************************************************
+*********************************************************************************************** -->
+
+
+
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Assignment 3</title>
+		<script type="text/javascript" src="3.js"></script>
+	</head>
+	<body>
+		<h1>Gists</h1>
+		<h2>Favorites</h2>
+			<div id="favorites">
+
+			</div>
+		<h2>Search</h2>
+			<div>
+				<h3>Options</h3>
+				<table>
+					<tr><td><label>Pages</label></td>
+					<td><select id="page_num">
+						<option value="1">1</option>
+						<option value="2">2</option>
+						<option value="3">3</option>
+						<option value="4">4</option>
+						<option value="5">5</option>
+					</select></td></tr>
+
+					<tr><td><label>Python</label></td><td><input type="checkbox" id="lang_py"></td></tr>
+					<tr><td><label>Javascript</label></td><td><input type="checkbox" id="lang_js"></td></tr>
+					<tr><td><label>JSON</label></td><td><input type="checkbox" id="lang_json"></td></tr>
+					<tr><td><label>SQL</label></td><td><input type="checkbox" id="lang_sql"></td></tr>
+
+					<tr><td><button onclick="search(document.getElementById('page_num').value)">Search</button></td></tr>
+				</table>
+
+				<h3>Results</h3>
+				<div id="results">
+
+				</div>
+			</div>
+	</body>
+</html>
