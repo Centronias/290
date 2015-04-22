@@ -15,6 +15,10 @@ function variableModification(a) {
   var yourNumberIs;
   //your code here
 
+	plus5 = a + 5;
+	asString = a.toString();
+	yourNumberIs = "Your Number is " + asString + "";
+
   //end your code
   return [plus5, asString, yourNumberIs, a];
 }
@@ -29,7 +33,9 @@ false otherwise
 */
 function isString(b) {
   //your code here
-  return undefined;
+
+	return typeof(b) === "string";
+
   //end your code
 }
 
@@ -42,6 +48,8 @@ return true if c is null, false otherwise
 */
 function isNull(c) {
   //your code here
-  return undefined;
+
+	return c === null;
+
   //end your code
 }
