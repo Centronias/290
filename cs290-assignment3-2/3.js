@@ -32,7 +32,13 @@ function updateFavorites()
 		row.appendChild(desc);
 
 		var fav = document.createElement("td");
-		fav.innerHTML = "<button onclick=\"removeFavorite('" + favorites[i].id.toString() + "')\">Remove</button>";
+		var button = document.createElement("button");
+		button.innerText = "Remove";
+		button.id = "_" + favorites[i].id.toString();
+		button.onclick = function(sender) {
+			removeFavorite(sender.currentTarget.id.substring(1));
+		};
+		fav.appendChild(button);
 		row.appendChild(fav);
 
 		row.appendChild(fav);
@@ -90,7 +96,13 @@ function updateGists(gists)
 		row.appendChild(desc);
 
 		var fav = document.createElement("td");
-		fav.innerHTML = "<button onclick=\"addFavorite('" + gists[i].id.toString() + "')\">Favorite</button>";
+		var button = document.createElement("button");
+		button.innerText = "Favorite";
+		button.id = "_" + gists[i].id.toString();
+		button.onclick = function(sender) {
+			addFavorite(sender.currentTarget.id.substring(1));
+		};
+		fav.appendChild(button);
 		row.appendChild(fav);
 
 		table.appendChild(row);
