@@ -159,14 +159,19 @@ function search(numPages)
 
 	var request = new XMLHttpRequest();
 
+	if (!request) {
+		alert("Failed to create XMLHttpRequest");
+		return;
+	}
+
 	request.onreadystatechange = function() {
 		if (request.readyState == 4 && request.status == 200) {
 			updateGists(JSON.parse(request.responseText));
 		}
-	}
+	};
 
 //	request.open("GET", "http://web.engr.oregonstate.edu/~santosch/cs290/test/dummy.json?per_page=" + 30 * numPages, true);
-	request.open("GET", "http://api.github.com/gists/public?per_page=" + 30 * numPages, true);
+	request.open("GET", "https://api.github.com/gists/public?per_page=" + 30 * numPages, true);
 	request.send();
 }
 
