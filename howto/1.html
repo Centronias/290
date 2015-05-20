@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<!-- **********************************************************************************************
+***************************************************************************************************
+1.html
+***************************************************************************************************
+Charles Santos
+CS290 Sp15
+How To
+***************************************************************************************************
+************************************************************************************************-->
+
+
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>How To</title>
+<script src="jquery-1.11.0.min.js"></script>
+<script src="howto.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="content">
+		<h1>First Step</h1>
+		<div>
+			<h2>Player History</h2>
+			<p>The first thing we need to do is provide users with some way to find the game they're interested in. The best way to find a match is to search on a participating player, then select the specific match from a list of their played matches.</p>
+			<p>To do this, we use the <b>matchhistory-v2.2</b> request which returns a list of matches in which a player participated, however it takes a <b>summonerId</b> as input. This id is effectively a unique number associated with a player and can be obtained from the <b>summoner-v1.4</b> method with a <b>by-name</b> request. Both of these requests return JSON containing the data we want. We get the summoner Id from the first request and then plug it into the second.</p>
+			<p>Check the demos below to see how this all looks. Try <b>Zirene</b> for a summoner name.</p>
+			<div class="nav">
+					<a href="index.html">Back</a> - <a href="2.html">Next</a>
+			</div>
+		</div>
+	</div>
+	<div class="content" id="demo">
+		<div>
+			<h2>Demo</h2>
+			<div id="err">
+				<span id="errmsg"></span>
+			</div>
+			<div>
+				<h3>Getting the summoner ID</h3>
+				<div class="code"><code>
+					https://na.api.pvp.net<b>/api/lol/na/v1.4/summoner/by-name/</b><span class="demofield" id="out_sumid_name">{summonerNames}</span><br>
+					id = jsonObj[<span class="demofield" id="out_sumid_name_2">{summonerNames}</span>].id<br>
+					<span class="democomment">/* The API allows for multiple summoner names to be in the parameters section, so long as they are comma delimited. This demo, on the other hand, does not */</span>
+				</code></div>
+				<div class="overflow" id="out_sumid_json">
+				</div>
+				<table>
+					<tr>
+						<td><label>Summoner Name</label></td>
+						<td><input type="text" id="in_sumid_name"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo1Id()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Summoner ID</label></td>
+						<td><span id="out_sumid_id"></span></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Getting the player's matches</h3>
+				<div class="code"><code>
+					https://na.api.pvp.net<b>/api/lol/na/v2.2/matchhistory/</b><span class="demofield" id="out_sumlist_id">{summonerId}</span><br>
+					<span class="democomment">/* The JSON object returned by this API call is an array of basic match info objects. We'll deal with these more in depth in part 3 */</span>
+				</code></div>
+				<div class="overflow" id="out_sumlist_json">
+				</div>
+				<table>
+					<tr>
+						<td><label>Summoner ID</label></td>
+						<td><input type="text" id="in_sumlist_id"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo1List()">Submit</button></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+							<h4>Matches</h4>
+							<table>
+								<thead>
+									<th>Map ID</th>
+									<th>Match Creation</th>
+									<th>Match Duration</th>
+									<th>Match ID</th>
+									<th>Match Mode</th>
+									<th>Match Type</th>
+									<th>Queue Type</th>
+								</thead>
+								<tbody id="out_sumlist_table"></tbody>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<p>This application isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</p>
+	</div>
+</body>
+</html>

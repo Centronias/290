@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<!-- **********************************************************************************************
+***************************************************************************************************
+2.html
+***************************************************************************************************
+Charles Santos
+CS290 Sp15
+How To
+***************************************************************************************************
+************************************************************************************************-->
+
+
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>How To</title>
+<script src="jquery-1.11.0.min.js"></script>
+<script src="howto.js"></script>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="content">
+		<h1>Second Step</h1>
+		<div>
+			<h2>Expanding Player Match History</h2>
+			<p>Now that we have gotten a list of matches for a given player, we want to display it nicely. Each match entry we got in the previous step's second API call has a very, very large amount of information. The items we want to display are the following:</p>
+			<ul>
+				<li>Which map the game was played on</li>
+				<li>When the match was</li>
+				<li>The duration of the match</li>
+				<li>The type of match</li>
+				<li>What character the player played as</li>
+			</ul>
+			<p>From there, we also want to provide a link from each entry to a page which will display more detailed information about the match.</p>
+			<p>Like was mentioned above, almost all of the data needed to display the above information is provided in the match object. The trouble, however, is that none of the data in the object itself is formatted or informative enough for direct display. We will need to do some transformation of the data to get it looking like how we want it to be displayed.</p>
+			<p>To form these transformations, we use the <b>lol-static-data-v1.2</b> category which exposes static information that does not involve any player, character, or match. This includes things like what map names match which map IDs. Each item will be constructed by the following:</p>
+			<ul>
+				<li>Map: get the <b>map id</b> from the <b>match</b> object and then get its display name with <b>/api/lol/static-data/na/v1.2/map</b> from the above static API</li>
+				<li>Date: get the <b>match creation</b> timestamp from the <b>match</b> object and convert it to a display-ready date-time using javascript</li>
+				<li>Duration: convert the <b>match duration</b> (in seconds) from the <b>match</b> object into minutes</li>
+				<li>Match Type: the match type is a combination of the <b>match mode</b>, <b>match type</b>, and <b>queue type</b> attributes from the <b>match</b> object, however we can get it just from the <b>queue type</b> because the other attributes are functionally dependent on the queue type.</li>
+				<li>Finally, the player's character is slightly more involved. Because of this, we will visit it in the next step.</li>
+			</ul>
+			<p>The demos below show how we perform all of these transformations. Fill in the information asked for by the demos with stats returned by the second portion of the previous step's demo.</p>
+			<div class="nav">
+					<a href="1.html">Back</a> - <a href="3.html">Next</a>
+			</div>
+		</div>
+	</div>
+	<div class="content" id="demo">
+		<div>
+			<h2>Demo</h2>
+			<div id="err">
+				<span id="errmsg"></span>
+			</div>
+			<div>
+				<h3>Getting the map name</h3>
+				<div class="code"><code>
+					https://na.api.pvp.net<b>/api/lol/static-data/na/v1.2/map</b><br>
+					jsonObj.data[<span class="demofield" id="out_match_info_mapid">map id</span>].mapName<br>
+					<span class="democomment">/* Make sure you check that the map ID exists in the object */</span>
+				</code></div>
+				<div class="overflow" id="out_matchinfo_map_json">
+				</div>
+				<table>
+					<tr>
+						<td><label>Map ID</label></td>
+						<td><input type="text" id="in_matchinfo_mapid"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo2Map()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Map Display Name</label></td>
+						<td><span id="out_matchinfo_map"></span></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Converting match creation</h3>
+				<div class="code"><code>
+					var data = <span class="demofield" id="out_matchinfo_createdata">data</span>;<br>
+					var date = new Date(data);
+				</code></div>
+				<table>
+					<tr>
+						<td><label>Match Creation Data</label></td>
+						<td><input type="text" id="in_matchinfo_create"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo2Create()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Match Creation Date-time</label></td>
+						<td><span id="out_matchinfo_create"></span></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Converting match duration</h3>
+				<div class="code"><code>
+					var data = <span class="demofield" id="out_matchinfo_durationdata">data</span>;<br>
+					var minutes = Math.floor(data / 60);
+				</code></div>
+				<table>
+					<tr>
+						<td><label>Match Duration Seconds</label></td>
+						<td><input type="text" id="in_matchinfo_duration"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo2Duration()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Match Duration Minutes</label></td>
+						<td><span id="out_matchinfo_duration"></span></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Determining match type</h3>
+				<div class="code"><code>
+					var queue = "<span class="demofield" id="out_matchinfo_type_queue">queue</span>";<br>
+					var displayType = queueTypeDictionary[queue];
+				</code></div>
+				<table>
+					<tr>
+						<td><label>Queue Type</label></td>
+						<td><input type="text" id="in_matchinfo_type_queue"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo2Type()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Match Display Type</label></td>
+						<td><span id="out_matchinfo_type"></span></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<p>This application isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</p>
+	</div>
+</body>
+</html>

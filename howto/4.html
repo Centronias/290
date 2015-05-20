@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!-- **********************************************************************************************
+***************************************************************************************************
+4.html
+***************************************************************************************************
+Charles Santos
+CS290 Sp15
+How To
+***************************************************************************************************
+************************************************************************************************-->
+
+
+
+<html>
+<head>
+<meta charset="UTF-8">
+<title>How To</title>
+<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="content">
+		<h1>Final Considerations</h1>
+		<div>
+			<p>Using the concepts demonstrated in these demos and a knowledge of the Riot Games API, we can now put together a functional, if basic, match history website. In this last section, I would like to go a small bit further into the details of either the non-technical aspects of design or some of the things that I glossed over in the demos without mentioning.</p>
+			<h3>Design Decisions</h3>
+			<p>As always, the first step to making a website is considering how it should be used. In the descriptions for the demos, I dictated vague ideas of how the website would be used, but here I would like to specifically describe the user's flow through the website. There are two pages on the site:</p>
+			<ul>
+				<li>
+					<p>Summoner Match History</p>
+					<p>The top of the page is a search box for summoner (player) names. When you put in a name and execute the search, the rest of the page asynchronously fills with results that compose the player's match history. Each result is a match which includes basic, high level stats for the player's performance in that match. Each result also has a link to the Detailed Match Information page that describes it.</p>
+				</li>
+				<li>
+					<p>Detailed Match Iformation</p>
+					<p>This page should only ever be accessed from the Match History page or a direct link that was ultimately accquired through the Match History page. This is because this page will take a request parameter, the match ID, and populate the information using that. THe match information will include details of who was in the match, how they did, and which team won. Each participant's information section will include a link to their match history page.</p>
+				</li>
+			</ul>
+			<p>This is a pretty basic but standard design for a match history site. It is easy to find a specific player, provided you have their name. It is possible to navigate through their matches, find other people in their matches, and meander around that way.</p>
+			<h3>API Region</h3>
+			<p>The first detail that I glossed over was that all of the API calls include a <b>{region}</b> parameter. For the most part, this selects which set of Riot's game servers the information is pulled from. Additionally, there is another hostname for each region as well as some references to <b>platform ID</b>s, each of which define the specific set of servers that are queried against. In all of the demos, I used the region <b>na</b>, North America. There is a whole list of regions available <a href="https://developer.riotgames.com/docs/regional-endpoints">here</a> if you are interested in another one.</p>
+			<h3>Demo Functionality</h3>
+			<p>Like the official site mentions many, many times, you want to hide your API key. I'll leave the explaining why to Riot, but I would like to describe how the demos work. Each demo with a button invokes a JavaScript call to do its work. The calls use JQuery to easily pull information from and write information to the page. Perhaps the most important part, however, is how we asynchronously access the Riot Games API.</p>
+			<p>It would be pretty simple to just make an asynchronous request to the API itself, but that would mean my API key is directly visible in the JavaScript, which is copied to and runs on the client's browser. Instead, I made a simple PHP wrapper which takes an arbitrary API call string, tacks it onto the hostname, and then appends my API key to the end. This hides the API key itself, but a random internet-goer could access the URL directly and execute arbitrary API calls. To preven this, the wrapper also makes sure that the request to the PHP page is coming from the same server as the PHP page itself is running on, preventing arbitrary access.</p>
+			<h3>Closing Thoughts</h3>
+			<p>Thanks for checking out the how-to guide. There's still tons of other things that would be needed for a truly good match history site, but they don't directly involve the Riot Games API, so I did not include them here. The first things that I think of are data aggregation for tracking trends, dealing with media (ie. images as pulled from Riot's <b>Data Dragon</b>), and all sorts of other stuff. Even using the API, there are many features still being added or available only to established applications. For my Final, I intend to use a fair amount of this work as well as pull in the media and maybe some data to make a (hopefully not crap) match history site. See you there!</p>
+			<div class="nav"><p>
+				<a href="3.html">Back</a>
+			</p></div>
+		</div>
+	</div>
+	<div class="footer">
+		<p>This application isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</p>
+	</div>
+</body>
+</html>

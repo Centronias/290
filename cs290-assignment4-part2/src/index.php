@@ -17,7 +17,7 @@ $msg = "";
 $host	= "oniddb.cws.oregonstate.edu";
 $user	= "santosch-db";
 $name	= "santosch-db";
-$pass	= "ZmcdpubP1A8GdcWt";
+$pass	= "nope";
 
 $db = new mysqli($host, $user, $pass, $name);
 

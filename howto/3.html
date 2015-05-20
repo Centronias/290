@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<!-- **********************************************************************************************
+***************************************************************************************************
+3.html
+***************************************************************************************************
+Charles Santos
+CS290 Sp15
+How To
+***************************************************************************************************
+************************************************************************************************-->
+
+
+
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>How To</title>
+	<script src="jquery-1.11.0.min.js"></script>
+	<script src="howto.js"></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="content">
+		<h1>Third Step</h1>
+		<div>
+			<h2>Detailed Match Info</h2>
+			<p>ow that we have the list of matches for the given player, we want to take a closer look at a specific match. This view is where we sort of link everything together. Not only do we want to be able to look at a specific match, but we want to see the other players in the match and want to be able to look at their histories, finding more matches.</p>
+			<p>So the first step here is to get the more detailed information about a match using the <b>match-v2.2</b> API. There is one call in this API, and it exposes a very great deal about the match. We want to use the following:</p>
+			<ul>
+				<li>Map ID (Same as step 2)</li>
+				<li>Match Creation Time (Same as step 2)</li>
+				<li>Match Duration (Same as step 2)</li>
+				<li>Queue Type (Same as step 2)</li>
+				<li>Participants / Participant IDs:
+					<ul>
+						<li>Champion ID (This will be used to get the champion's display name using the <b>lol-static-data-v1.2</b> API, like the map name)</li>
+						<li>Stats (This is a large object itself)</li>
+						<li>Team ID</li>
+						<li>Participant ID</li>
+						<li>Player Information</li>
+					</ul>
+				</li>
+				<li>Teams:
+					<ul>
+						<li>Winner</li>
+					</ul>
+				</li>
+			</ul>
+			<p>The demos below will demonstrate how we get and use the previously stated information. Grab a match ID from the first step's second demo to plug in here. The first portion of this demo will fill in the information needed for the other parts.
+			</p>
+			<div class="nav">
+					<a href="2.html">Back</a> - <a href="4.html">Final Considerations</a>
+			</div>
+		</div>
+	</div>
+	<div class="content" id="demo">
+		<div>
+			<h2>Demo</h2>
+			<div id="err">
+				<span id="errmsg"></span>
+			</div>
+			<div>
+				<h3>Getting the match info</h3>
+				<div class="code"><code>
+					https://na.api.pvp.net<b>/api/lol/na/v2.2/match/</b><span class="demofield" id="out_match_id">{matchId}</span><br>
+					<span class="democomment">/* This API returns the match object. We'll be using its various attributes in the other portions of this demo */</span>
+				</code></div>
+				<div class="overflow" id="out_match_json">
+				</div>
+				<table>
+					<tr>
+						<td><label>Match ID</label></td>
+						<td><input type="text" id="in_match_id"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo3Info()">Submit</button></td>
+					</tr>
+					<tr>
+						<td colspan=2><span id="out_match_info"></span>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Getting participant info</h3>
+				<div class="code"><code>
+					for (var i in <span class="demofield">matchJsonObj</span>.participants) {<br><br>
+						var character = <span class="demofield">matchJsonObj</span>.participants[i].championId;<br><span class="democomment">/* This ID represents which character this player played as. We'll convert it to a display name below */</span><br><br>
+						var team = <span class="demofield">matchJsonObj</span>.participants[i].teamId / 100;<br><span class="democomment">/* Team IDs seem to be multiples of 100, so we divide it down to 1 or 2 */</span><br><br>
+						var summonerId = <span class="demofield">matchJsonObj</span>.participantIdentities[i].player.summonerId;<br><span class="democomment">/* We can use this to generate the match history for this player. This object also has a "match history URI", but it seems to be using an old version of the API */</span><br><br>
+						var playerName = <span class="demofield">matchJsonObj</span>.participantIdentities[i].player.summonerName;<br><br>
+						var kda = <span class="demofield">matchJsonObj</span>.participants[i].stats.kills + "/"<br>+ <span class="demofield">matchJsonObj</span>.participants[i].stats.deaths + "/"<br>+ <span class="demofield">matchJsonObj</span>.participants[i].stats.assists;<br><span class="democomment">/* This utilizes a very, very small portion of the stats object */</span><br><br>
+					}
+				</code></div>
+				<table>
+					<tr>
+						<td><label>Have Match Data</label></td>
+						<td><span class="demofield" id="in_match_participants">No</span></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo3Participants()">Submit</button></td>
+					</tr>
+					<tr>
+						<td colspan=2>
+							<h4>Participants</h4>
+							<table>
+								<thead>
+									<th>Character ID</th>
+									<th>Team</th>
+									<th>Summoner ID</th>
+									<th>Player Name</th>
+									<th>KDA (Score)</th>
+								</thead>
+								<tbody id="out_match_participants"></tbody>
+							</table>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Determining the winning team</h3>
+				<div class="code"><code>
+					if (<span class="demofield">matchJsonObj</span>.teams[0].winner)<br>
+					<span class="democomment">/* Team 1 won */</span><br>
+					else<br>
+					<span class="democomment">/* Team 2 won */</span>
+				</code></div>
+				<table>
+					<tr>
+						<td><label>Have Match Data</label></td>
+						<td><span class="demofield" id="in_match_winner">No</span></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo3Winner()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Winning Team</label></td>
+						<td><span id="out_match_winner"></span></td>
+					</tr>
+				</table>
+			</div>
+			<div>
+				<h3>Getting character display name</h3>
+				<div class="code"><code>
+					https://na.api.pvp.net<b>/api/lol/static-data/na/v1.2/champion/</b><span class="demofield" id="out_match_champId">champion id</span><br>
+					<span class="demofield">matchJsonObj</span>.name<br>
+					<span class="democomment">/* Note that the API will return <b>OK 200</b> even if you give it an ID that does not correspond to a character */</span>
+				</code></div>
+				<div class="overflow" id="out_match_champJson">
+				</div>
+				<table>
+					<tr>
+						<td><label>Champion ID</label></td>
+						<td><input type="text" id="in_match_champId"></td>
+					</tr>
+					<tr>
+						<td colspan=2><button onclick="demo3Champ()">Submit</button></td>
+					</tr>
+					<tr>
+						<td><label>Display name</label></td>
+						<td><span id="out_champName"></span></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="footer">
+		<p>This application isn't endorsed by Riot Games and doesn't reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.</p>
+	</div>
+</body>
+</html>
